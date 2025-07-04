@@ -1,4 +1,9 @@
-mediapipe
 opencv-python
-tensorflow
+mediapipe
+matplotlib
 numpy
+scikit-learn
+tensorflow
+fastapi
+uvicorn[standard]
+websockets
