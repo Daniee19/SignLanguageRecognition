@@ -129,7 +129,7 @@ def extraer_puntos(results):
 
 ####### 127 - 194
 #Son las etiquetas
-acciones = np.array(["hola", "gracias", "te amo"])
+# acciones = np.array(["hola", "gracias", "te amo"])
 #Devuelve un diccionario de clave valor-> "hola" : 0
 label_map = {
     label: num 
@@ -231,7 +231,7 @@ tb_callback = TensorBoard(log_dir=log_dir)
 
 # # #9. Guardar pesos
 # model.save("action.h5")
-model = load_model("action.h5")
+model = load_model("model/action.h5")
 
 #Cambiar de one-hot-encoding a categorical label (en una misma fila)
 ytrue = np.argmax(y_test, axis=1).tolist()
