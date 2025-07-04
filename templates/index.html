@@ -1,0 +1,37 @@
+<!--
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Reconocimiento de gestos</title>
+</head>
+<body>
+  <h1>Reconocimiento de gestos</h1>
+  <video id="video" autoplay></video>
+  <p>Gesto detectado: <span id="output">Esperando...</span></p>
+
+  <script>
+    const video = document.getElementById("video");
+    const output = document.getElementById("output");
+    const socket = new WebSocket("ws://localhost:8000/ws");
+
+    navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+      video.srcObject = stream;
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+
+      setInterval(() => {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        context.drawImage(video, 0, 0);
+        const imageData = canvas.toDataURL("image/jpeg");
+        socket.send(imageData);
+      }, 100);
+
+      socket.onmessage = (event) => {
+        output.textContent = event.data;
+      };
+    });
+  </script>
+</body>
+</html>
+-->
