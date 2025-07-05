@@ -68,7 +68,7 @@
                 ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
                 const dataUrl = canvas.toDataURL("image/jpeg");
                 ws.send(dataUrl); // envia la imagen como string base64
-            }, 100); // 100 ms = 10 fps aprox.
+            }, 150); // 100 ms = 10 fps aprox.
         }).catch((err) => {
             console.error("Error al acceder a la cámara:", err);
             output.innerText = "No se pudo acceder a la cámara.";

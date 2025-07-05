@@ -14,8 +14,8 @@ app = FastAPI()
 
 # Establecer la ruta de los archivos estáticos y las plantillas
 
-static_path = os.path.join(os.path.dirname(__file__), "static/")
-templates_path = os.path.join(os.path.dirname(__file__), "templates/")
+
+static_path = os.path.join(os.path.dirname(__file__), "static")
 
 # Servir archivos estáticos
 # Se pueden servir archivos estáticos como imágenes, CSS, JS, etc.
@@ -26,7 +26,8 @@ mp_holistic = mp.solutions.holistic
 
 @app.get("/")
 async def index():
-    return FileResponse("static/client.html")
+    file_path = os.path.join(static_path, "html", "home.html")
+    return FileResponse(file_path)
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):

@@ -1,0 +1,248 @@
+*{
+  font-family: sans-serif;
+}
+:root {
+  --blanco: #ffffff;
+  --gris-claro: #f0f0f0;
+  --gris-oscuro: #333333;
+  --gris-medio: #888888;
+}
+
+.btn-link {
+  text-decoration: none;
+  background-color: var(--gris-oscuro);
+  color: var(--blanco);
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+.btn-link:hover {
+  background-color: var(--gris-medio);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Aptos', sans-serif;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--blanco);
+  color: var(--gris-oscuro);
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--gris-claro);
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.topbar .logo {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.topbar .nav-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.topbar .nav-links a,
+.topbar .nav-links button {
+  text-decoration: none;
+  background: none;
+  border: none;
+  color: var(--gris-oscuro);
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.topbar .nav-links a:hover,
+.topbar .nav-links button:hover {
+  background-color: var(--gris-medio);
+  color: var(--blanco);
+}
+
+nav {
+  background-color: var(--gris-claro);
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 60px;
+  height: calc(100vh - 60px);
+  padding: 1rem;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+  transition: width 0.3s ease;
+  overflow: hidden;
+}
+
+nav.open {
+  width: 220px;
+}
+
+.menu-toggle {
+  font-size: 1.8rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: var(--gris-oscuro);
+  display: block;
+  margin-bottom: 2rem;
+}
+
+.menu-items {
+  display: none;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+nav.open .menu-items {
+  display: flex;
+}
+
+nav a {
+  text-decoration: none;
+  color: var(--gris-oscuro);
+  padding: 0.8rem;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+nav a:hover {
+  background-color: var(--gris-medio);
+  color: var(--blanco);
+}
+
+main {
+  margin-left: 60px;
+  transition: margin-left 0.3s ease;
+}
+
+nav.open ~ main {
+  margin-left: 220px;
+}
+
+header {
+  background: linear-gradient(to right, var(--gris-claro), var(--blanco));
+  padding: 3rem 2rem;
+  text-align: center;
+  animation: fadeIn 1s ease-in;
+}
+
+header h1 {
+  font-size: 2.5rem;
+}
+
+header p {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  color: var(--gris-medio);
+}
+
+.btn {
+  margin-top: 2rem;
+  padding: 0.8rem 2rem;
+  background-color: var(--gris-oscuro);
+  color: var(--blanco);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background-color: var(--gris-medio);
+}
+
+section {
+  padding: 4rem 2rem;
+  animation: fadeInUp 1s ease;
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.section-text {
+  max-width: 800px;
+  margin: auto;
+  text-align: center;
+  color: var(--gris-medio);
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.feature {
+  padding: 1rem;
+  border: 1px solid var(--gris-claro);
+  border-radius: 10px;
+  transition: transform 0.3s;
+}
+
+.feature:hover {
+  transform: translateY(-5px);
+}
+
+footer {
+  background-color: var(--gris-claro);
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.9rem;
+  color: var(--gris-medio);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  nav {
+    width: 100%;
+    height: auto;
+    top: auto;
+  }
+
+  nav.open {
+    height: auto;
+  }
+
+  main {
+    margin-left: 0;
+  }
+
+  .topbar {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+}
