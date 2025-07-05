@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comunicando con Señas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Aptos&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/home.css">
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="logo"><img src="/static/img/5687763.png" alt="Logo Empresa" style="height: 60px;"></div>
+    <div class="nav-links">
+      <a href="#">Contáctanos</a>
+      <a href="/static/html/portada.html" class="btn-link">Sign In</a>
+      <a href="/static/html/registrarse.html" class="btn-link">Register</a>
+    </div>
+  </div>
+
+  <nav id="sidebar">
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <div class="menu-items">
+      <a href="#">Entrenar AI</a>
+      <a href="/static/html/video.html">Empezar a practicar</a>
+    </div>
+  </nav>
+
+  <main>
+    <header>
+      <h1>NAVEGADOR PARA CREAR Y PRACTICAR CON</h1>
+      <h1>LENGUAJE DE SEÑAS</h1>
+      <p>🤝 Rompiendo barreras de comunicación </p>
+      <p>Conectamos personas a través del lenguaje de señas en tiempo real</p>
+      <button class="btn" onclick="scrollToSection('info')">EMPEZAR</button>
+    </header>
+
+    <section id="info">
+      <h2 class="section-title">¿Qué es este proyecto?</h2>
+      <p class="section-text">
+        Desarrollamos un navegador que permite videollamadas con traducción de lenguaje de señas en tiempo real.
+        Utilizamos cámaras, inteligencia artificial y reconocimiento visual para facilitar la comunicación entre
+        personas sordas y oyentes.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="section-title">¿Cómo funciona?</h2>
+      <div class="features">
+        <div class="feature">
+          <h3>📹 Captura en vivo</h3>
+          <p>Detectamos señas mediante la cámara web.</p>
+        </div>
+        <div class="feature">
+          <h3>🧠 Procesamiento con IA</h3>
+          <p>Interpretamos los gestos y movimientos de manos.</p>
+        </div>
+        <div class="feature">
+          <h3>💬 Traducción</h3>
+          <p>Transformamos las señas en texto o voz.</p>
+        </div>
+        <div class="feature">
+          <h3>🔄 Comunicación fluida</h3>
+          <p>Interacción natural e inclusiva entre todos.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Beneficios</h2>
+      <div class="features">
+        <div class="feature">Inclusión y accesibilidad</div>
+        <div class="feature">Comunicación en tiempo real</div>
+        <div class="feature">No necesita instalación</div>
+        <div class="feature">Compatible con cualquier dispositivo</div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Historias de Usuarios</h2>
+      <div class="features" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+        <div class="feature">
+          <img src="/static/img/historia1.jpg" alt="Usuario 1" style="width:100%; border-radius: 8px; margin-bottom: 1rem;">
+          <p>"Gracias a esta plataforma, ahora puedo <strong>comunicarme fácilmente </strong>con mis compañeros de trabajo."</p>
+        </div>
+        <div class="feature">
+          <img src="/static/img/historia2.jpg" alt="Usuario 2" style="width:100%; border-radius: 8px; margin-bottom: 1rem;">
+          <p>"Una herramienta maravillosa que me ha permitido mantener <strong>contacto</strong> con mi familia."</p>
+        </div>
+        <div class="feature">
+          <img src="/static/img/historia3.jpg" alt="Usuario 3" style="width:100%; border-radius: 8px; margin-bottom: 1rem;">
+          <p>"La interpretación en <strong>tiempo real </strong>hace toda la diferencia para la inclusión."</p>
+        </div>
+        <div class="feature">
+          <img src="/static/img/historia4.jpg" alt="Usuario 4" style="width:100%; border-radius: 8px; margin-bottom: 1rem;">
+          <p>"Una experiencia de usuario muy <strong>fluida</strong>. Lo recomiendo mucho."</p>
+        </div>
+        <div class="feature">
+          <img src="/static/img/historia5.jpg" alt="Usuario 5" style="width:100%; border-radius: 8px; margin-bottom: 1rem;">
+          <p>"Ahora puedo tener <strong>comunicarme</strong> sin barreras. ¡Increíble!"</p>
+        </div>
+        <div class="feature">
+          <img src="/static/img/historia6.jpg" alt="Usuario 6" style="width:100%; border-radius: 8px; margin-bottom: 1rem;">
+          <p>"Es como tener un <strong>intérprete</strong> conmigo todo el tiempo."</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      &copy; 2025 Navegador de Lengua de Señas | Todos los derechos reservados
+    </footer>
+  </main>
+
+  <script src="/static/js/home.js"></script>
+</body>
+
+</html>
