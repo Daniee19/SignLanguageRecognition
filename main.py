@@ -14,6 +14,7 @@ app = FastAPI()
 
 # Establecer la ruta de los archivos estáticos y las plantillas
 
+
 static_path = os.path.join(os.path.dirname(__file__), "static")
 
 # Servir archivos estáticos

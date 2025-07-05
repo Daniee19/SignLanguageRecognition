@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reconocimiento de gestos</title>
+    <style>
+        video, canvas {
+            display: block;
+        }
+        #output {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        #output{
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Reconocimiento de Lenguaje de Señas</h1>
+    <div id="container" style="text-align: center; justify-content: center; gap:5px; display: flex;">
+      <video id="video" autoplay playsinline width="640" height="480"></video>
+      <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
+      <img id="preview" width="640" height="480">
+    </div>
+    <div id="output">Esperando conexión...</div>
+
+    <script>
+        const video = document.getElementById("video");
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        const output = document.getElementById("output");
+        const preview = document.getElementById("preview");
+
+        // 1. Establecer conexión WebSocket
+        const ws = new WebSocket("ws://localhost:8000/ws");
+
+        ws.onopen = () => {
+            output.innerText = "Conectado. Enviando video...";
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.frame) preview.src = data.frame;
+            if (data.action) {
+                output.innerText = `Gesto detectado: ${data.action} (${(data.probability * 100).toFixed(1)}%)`;
+            } else {
+                output.innerText = `Sin gesto detectado`;
+            }
+        };
+
+        ws.onerror = (err) => {
+            console.error("WebSocket error:", err);
+            output.innerText = "Error en WebSocket.";
+        };
+
+        ws.onclose = () => {
+            output.innerText = "Conexión cerrada.";
+        };
+
+        // 2. Obtener acceso a la cámara
+        navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+            video.srcObject = stream;
+
+            // 3. Capturar y enviar frames cada 100 ms
+            setInterval(() => {
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                const dataUrl = canvas.toDataURL("image/jpeg");
+                ws.send(dataUrl); // envia la imagen como string base64
+            }, 150); // 100 ms = 10 fps aprox.
+        }).catch((err) => {
+            console.error("Error al acceder a la cámara:", err);
+            output.innerText = "No se pudo acceder a la cámara.";
+        });
+    </script>
+</body>
+</html>
