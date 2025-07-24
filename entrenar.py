@@ -4,7 +4,8 @@ import numpy as np
 import mediapipe as mp
 
 # === Palabra a entrenar ===
-nueva_palabra = "perdon"
+
+nueva_palabra = "feliz"
 
 # Número de videos y frames por video
 secuencia_video = 30
@@ -59,28 +60,38 @@ def extraer_puntos(results):
 # Captura y guardado
 cap = cv2.VideoCapture(0)
 with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
+    accion = nueva_palabra
+    
     for sec_video in range(secuencia_video):
-        for frame_number in range(secuencia_frame):
-            ret, frame = cap.read()
-            image, resultados = mediapipe_deteccion(frame, holistic)
-            dibujar_landmarks(image, resultados)
+            for frame_number in range(secuencia_frame):
+                #Leer por el video
+                ret, frame = cap.read()
 
-            if frame_number == 0:
-                cv2.putText(image, f'EMPEZANDO {nueva_palabra.upper()}...', (
-                    20, 200), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 3, cv2.LINE_AA)
-                cv2.imshow('Recolectando', image)
-                cv2.waitKey(2000)
-            else:
-                cv2.putText(image, f'{nueva_palabra} | Video: {sec_video} | Frame: {frame_number}', (
-                    10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2, cv2.LINE_AA)
-                cv2.imshow('Recolectando', image)
+                #Realizar detecciones
+                image, resultados = mediapipe_deteccion(frame, holistic)
+                dibujar_landmarks(image, resultados)
 
-            keypoints = extraer_puntos(resultados)
-            np.save(os.path.join(DATA_PATH, str(sec_video),
-                    str(frame_number)), keypoints)
+                if frame_number == 0:
+                    cv2.putText(image, "EMPEZANDO LA RECOLECCION", (120,200),
+                                cv2.FONT_HERSHEY_COMPLEX, 1, (0,255,0), 4, cv2.LINE_AA)
+                    cv2.putText(image, "Recolectando {} frame Nro: {} Numero de video: {}".format(accion, frame_number, sec_video), (15,12),
+                                cv2.FONT_HERSHEY_COMPLEX, 0.5, (0,0,255), 1, cv2.LINE_AA)
+                    cv2.imshow('OpenCV feed', image)
+                    #Se hace esto para tener tiempo de ubicarnos bien
+                    cv2.waitKey(2000)
+                else:
+                    cv2.putText(image, "Recolectando {} frame Nro: {} Numero de video: {}".format(accion, frame_number, sec_video), (15,12),
+                                cv2.FONT_HERSHEY_COMPLEX, 0.5, (0,0,255), 1, cv2.LINE_AA)
+                    cv2.imshow('OpenCV feed', image)
 
-            if cv2.waitKey(10) & 0xFF == ord('q'):
-                break
 
+                #Exportar puntos claves de cada frame
+                keypoints = extraer_puntos(resultados)
+                npy_path = os.path.join(DATA_PATH ,accion, str(sec_video), str(frame_number))
+                np.save(npy_path, keypoints)
+
+                #Si se presiona q se sale del bucle
+                if cv2.waitKey(10) & 0xFF == ord('q'):
+                    break
 cap.release()
 cv2.destroyAllWindows()
