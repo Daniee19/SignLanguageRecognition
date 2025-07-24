@@ -25,12 +25,10 @@ app.mount("/static", StaticFiles(directory=static_path), name="static")
 model = SignModel()
 mp_holistic = mp.solutions.holistic
 
-
 @app.get("/")
 async def index():
     file_path = os.path.join(static_path, "html", "home.html")
     return FileResponse(file_path)
-
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
@@ -38,6 +36,7 @@ async def websocket_endpoint(websocket: WebSocket):
     with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
         while True:
             data = await websocket.receive_text()
+
             header, b64 = data.split(",", 1)
             img_data = base64.b64decode(b64)
             nparr = np.frombuffer(img_data, np.uint8)
@@ -51,6 +50,7 @@ async def websocket_endpoint(websocket: WebSocket):
             await websocket.send_json({
                 "frame": f"data:image/jpeg;base64,{jpg_b64}",
                 "action": str(action),
+
                 # o None si prefieres
                 "probability": float(prob) if prob is not None else 0.0
             })
@@ -71,3 +71,4 @@ async def websocket_entrenar(websocket: WebSocket):
             _, buf = cv2.imencode('.jpg', img)
             jpg_b64 = base64.b64encode(buf).decode('utf-8')
             await websocket.send_json({"frame": f"data:image/jpeg;base64,{jpg_b64}"})
+

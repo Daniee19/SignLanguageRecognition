@@ -1,18 +1,22 @@
-*{
+/* ====== RESET GENERAL ====== */
+* {
   font-family: sans-serif;
   color: black;
-}
-/* Fondo con imagen */
-body {
-  height: 100vh;
-  background-color: white; 
-  background-size: cover;
-  color: rgb(0, 0, 0);
-  overflow: hidden;
-  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* Estructura general con grid */
+/* ====== CUERPO Y FONDO ====== */
+body {
+  height: 100vh;
+  background-color: white;
+  background-size: cover;
+  overflow: hidden;
+}
+
+/* ====== GRID PRINCIPAL ====== */
+
 #grid-layout {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -22,6 +26,7 @@ body {
     "sidebar main";
   height: 100vh;
 }
+
 
 /* Sidebar */
 .sidebar {
@@ -62,11 +67,13 @@ body {
 }
 
 /* Estilo para video, canvas, imagen */
-video, canvas, #preview {
+video,
+canvas,
+#preview {
   display: block;
   margin: 10px auto;
   border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0,0,0,0.4);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
 }
 
 /* Texto de salida */
@@ -86,15 +93,17 @@ video, canvas, #preview {
   margin-bottom: 20px;
 }
 
-video, canvas, #preview {
+video,
+canvas,
+#preview {
   width: 640px;
   height: 480px;
   object-fit: cover;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
-.sidebar {
+*/ .sidebar {
   grid-area: sidebar;
   background-color: rgba(30, 30, 63, 0.95);
   width: 80px;
@@ -146,3 +155,96 @@ a {
   color: white;
 }
 
+/* ====== ENCABEZADO ====== */
+#header {
+  grid-area: header;
+  background-color: rgba(255, 255, 255, 0.08);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(6px);
+}
+
+/* ====== CONTENIDO PRINCIPAL ====== */
+.main-content {
+  grid-area: main;
+  background-color: rgba(255, 255, 255, 0.08);
+  padding: 2rem;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  backdrop-filter: blur(4px);
+  border-radius: 12px;
+  margin: 1rem;
+}
+
+/* ====== CONTENEDOR VIDEO + GESTOS ====== */
+#container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  /* <- importante para igual altura */
+  gap: 40px;
+  flex-wrap: nowrap;
+  margin-bottom: 20px;
+  height: 300px;
+  /* ajusta según necesidad */
+}
+
+/* ====== TARJETA DE GESTOS ====== */
+.card {
+  background-color: #ffffffa1;
+  border: 2px solid #ffffffa1;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.card h3 {
+  color: #343a40;
+}
+
+#listaGestos li {
+  padding: 6px 0;
+  color: #212529;
+  font-size: 16px;
+}
+
+/* ====== VIDEO CONTAINER ====== */
+.video-container {
+  width: 400px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* ====== VIDEO, CANVAS Y PREVIEW ====== */
+video,
+canvas,
+#preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* ====== TEXTO DE ESTADO ====== */
+#output {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 20px;
+  color: black;
+}
