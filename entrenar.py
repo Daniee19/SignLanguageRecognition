@@ -4,7 +4,8 @@ import numpy as np
 import mediapipe as mp
 
 # === Palabra a entrenar ===
-nueva_palabra = "perdon"
+
+nueva_palabra = "otro"
 
 # Número de videos y frames por video
 secuencia_video = 30

@@ -1,0 +1,161 @@
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Entrenamiento de Señales</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f1f1f1;
+        }
+
+        #canvas {
+            border: 2px solid #333;
+            width: 640px;
+            height: 480px;
+            margin-top: 20px;
+        }
+
+        #status {
+            margin-top: 15px;
+            font-weight: bold;
+            color: green;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        input {
+            padding: 8px;
+            font-size: 14px;
+        }
+    </style>
+    <style type="text/css" id="operaUserStyle"></style>
+    <style type="text/css"></style>
+</head>
+
+<body>
+
+    <h1>Entrenamiento de Lenguaje de Señas</h1>
+
+    <label for="word">Palabra a entrenar:</label>
+    <input type="text" id="word" placeholder="Escribe la palabra">
+
+    <h3>Palabra actual: <span id="current-word">hola</span></h3>
+    <h3>Video: <span id="video-count">30</span> / 30</h3>
+    <h3>Frames guardados: <span id="frame-count">30</span> / 30</h3>
+
+    <button id="startBtn">Iniciar Entrenamiento</button>
+    <div id="status">✅ Entrenamiento completo para esta palabra.</div>
+
+    <canvas id="canvas" width="640" height="480"></canvas>
+
+    <script>
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        const wordInput = document.getElementById("word");
+        const wordLabel = document.getElementById("current-word");
+        const frameLabel = document.getElementById("frame-count");
+        const videoLabel = document.getElementById("video-count");
+        const status = document.getElementById("status");
+
+        let ws = null;
+        let frameCount = 0;
+        let videoCount = 0;
+        const maxVideos = 30;
+        const maxFrames = 30;
+        let recording = false;
+        let localVideoStream = null;
+
+        async function setupCamera() {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            localVideoStream = document.createElement("video");
+            localVideoStream.srcObject = stream;
+            localVideoStream.play();
+            return new Promise(resolve => {
+                localVideoStream.onloadedmetadata = () => resolve();
+            });
+        }
+
+        async function startTraining() {
+            const word = wordInput.value.trim();
+            if (!word) {
+                alert("Escribe una palabra antes de comenzar.");
+                return;
+            }
+
+            wordLabel.textContent = word;
+            frameCount = 0;
+            videoCount = 1;
+            frameLabel.textContent = "0";
+            videoLabel.textContent = "1";
+            status.textContent = "";
+
+            await setupCamera();
+
+            ws = new WebSocket(`ws://${location.host}/ws/entrenar`);
+
+            ws.onopen = () => {
+                console.log("WebSocket conectado");
+                recording = true;
+                status.textContent = "Entrenando...";
+            };
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                const image = new Image();
+                image.onload = () => {
+                    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+                    // Mostrar texto superpuesto
+                    ctx.fillStyle = "white";
+                    ctx.font = "20px Arial";
+                    ctx.fillText(`Palabra: ${word}`, 10, 30);
+                    ctx.fillText(`Video ${videoCount}/${maxVideos}`, 10, 60);
+                    ctx.fillText(`Frame ${frameCount}/${maxFrames}`, 10, 90);
+                };
+                image.src = data.frame;
+
+                // Contador local simulado
+                if (recording) {
+                    frameCount++;
+                    if (frameCount > maxFrames) {
+                        frameCount = 0;
+                        videoCount++;
+                        if (videoCount > maxVideos) {
+                            status.textContent = "✅ Entrenamiento completo para esta palabra.";
+                            recording = false;
+                            return;
+                        }
+                    }
+                    frameLabel.textContent = frameCount;
+                    videoLabel.textContent = videoCount;
+                }
+            };
+
+            const sendFrame = () => {
+                if (!ws || ws.readyState !== WebSocket.OPEN || !recording) return;
+                const tmpCanvas = document.createElement("canvas");
+                tmpCanvas.width = localVideoStream.videoWidth;
+                tmpCanvas.height = localVideoStream.videoHeight;
+                const tmpCtx = tmpCanvas.getContext("2d");
+                tmpCtx.drawImage(localVideoStream, 0, 0, tmpCanvas.width, tmpCanvas.height);
+                const dataURL = tmpCanvas.toDataURL("image/jpeg");
+                ws.send(JSON.stringify({ frame: dataURL, word: word }));
+            };
+
+            setInterval(sendFrame, 100);
+        }
+
+        document.getElementById("startBtn").addEventListener("click", startTraining);
+    </script>
+
+
+
+</body>
+
+</html>

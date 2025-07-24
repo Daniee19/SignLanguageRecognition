@@ -25,28 +25,30 @@
     </header>
 
     <main class="main-content">
-  <div id="container">
-    
-    <div class="card">
-      <h3>Gestos disponibles:</h3>
-      <ul id="listaGestos" style="color:black; font-family: sans-serif;"></ul>
-    </div>
 
-    <div class="video-container">
-      <h3 style="color:black; font-weight: 700;font-family: sans-serif;"></h3>
-      <video id="video" autoplay playsinline width="640" height="480"></video>
-    </div>
+      <div id="container">
 
-    <div style="display:none">
-      <h2 style="color:black; font-weight: 700;font-family: sans-serif;">DETECCIÓN DE PUNTOS</h2>
-      <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
-      <img id="preview" width="640" height="480">
-    </div>
+        <div class="card">
+          <h3>Gestos disponibles:</h3>
+          <ul id="listaGestos" style="color:black; font-family: sans-serif;"></ul>
+        </div>
 
-  </div>
+        <div class="video-container">
+          <h3 style="color:black; font-weight: 700;font-family: sans-serif;"></h3>
+          <video id="video" autoplay playsinline width="640" height="480"></video>
+        </div>
 
-  <div id="output">Esperando conexión...</div>
-</main>
+        <div style="display:none">
+          <h2 style="color:black; font-weight: 700;font-family: sans-serif;">DETECCIÓN DE PUNTOS</h2>
+          <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
+          <img id="preview" width="640" height="480">
+        </div>
+
+      </div>
+
+      <div id="output">Esperando conexión...</div>
+    </main>
+
   </div>
 
   <script>
@@ -79,7 +81,7 @@
     // ws = new WebSocket(`wss://${window.location.hostname}/ws`); CONEXIÓN ANTIGUA
 
     function connectWebSocket() {
-      
+
       ws = new WebSocket(getWebSocketURL());
 
       ws.onopen = () => {
@@ -88,12 +90,12 @@
           sendInterval = setInterval(() => {
             if (ws.readyState === WebSocket.OPEN) {
               try {
-              ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-              const dataUrl = canvas.toDataURL("image/jpeg");
-              ws.send(dataUrl);
-            } catch (err) {
-              console.error("Error al enviar frame:", err);
-            }
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                const dataUrl = canvas.toDataURL("image/jpeg");
+                ws.send(dataUrl);
+              } catch (err) {
+                console.error("Error al enviar frame:", err);
+              }
             }
           }, 150);
         }
@@ -142,12 +144,13 @@
 
     const gestos = ["Hola", "Gracias", "Adiós", "Amor", "Sí", "No", "Ayuda"];
 
-  const lista = document.getElementById("listaGestos");
-  gestos.forEach(gesto => {
-    const li = document.createElement("li");
-    li.textContent = gesto;
-    lista.appendChild(li);
-  });
+    const lista = document.getElementById("listaGestos");
+    gestos.forEach(gesto => {
+      const li = document.createElement("li");
+      li.textContent = gesto;
+      lista.appendChild(li);
+    });
+
   </script>
 </body>
 
