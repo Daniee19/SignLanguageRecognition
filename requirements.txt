@@ -1,0 +1,9 @@
+opencv-python
+mediapipe
+matplotlib
+numpy
+scikit-learn
+tensorflow
+fastapi
+uvicorn[standard]
+websockets

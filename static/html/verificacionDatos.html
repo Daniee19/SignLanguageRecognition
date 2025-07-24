@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glassmorphism Login Form | CodingNepal</title>
+    <link rel="icon" href="../img/logos/fondoN.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/verifDats.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <form action="#">
+            <h2>Verificación de Correo</h2>
+            <div class="input-field">
+                <input type="email" required placeholder=" ">
+                <label>Ingrese su E-mail</label>
+                <span class="tooltip">Correo inválido</span>
+            </div>
+            <div class="input-field">
+                <input type="text" required placeholder=" ">
+                <label>Ingrese el Código de Verificación</label>
+            </div>
+            <script>
+                function togglePassword(inputId, button) {
+                    const input = document.getElementById(inputId);
+                    const icon = button.querySelector("i");
+
+                    if (input.type === "password") {
+                        input.type = "text";
+                        icon.classList.remove("fa-eye-slash");
+                        icon.classList.add("fa-eye");
+                    } else {
+                        input.type = "password";
+                        icon.classList.remove("fa-eye");
+                        icon.classList.add("fa-eye-slash");
+                    }
+                }
+            </script>
+            <div class="codigo">
+                <p>No tiene un código? <a href="iniciosesionadmin.html">Enviar Código</a></p><br><br>
+            </div>
+            <button type="submit">Verificar</button>
+        </form>
+    </div>
+</body>
+
+</html>

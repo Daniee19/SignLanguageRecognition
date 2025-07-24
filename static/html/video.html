@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Reconocimiento de gestos</title>
+  <link rel="stylesheet" href="/static/css/client.css" />
+</head>
+
+<body>
+  <div id="grid-layout">
+    <aside class="sidebar">
+      <button id="toggleMenu">☰</button>
+      <nav id="menuOpciones" class="hidden">
+        <a href="/static/html/home.html">Inicio</a>
+        <a href="/static/html/portada.html">Cambiar de rol</a>
+        <a href="/static/html/iniciosesion.html">Cerrar sesión</a>
+      </nav>
+    </aside>
+
+    <header id="header">
+      <div style="font-size: 1.6rem;
+    font-weight: 900;">Reconocimiento de Lenguaje de Señas</div>
+      <div><a href="/static/html/home.html" style="color: black;">👤 Usuario</a></div>
+    </header>
+
+    <main class="main-content">
+  <div id="container">
+    
+    <div class="card">
+      <h3>Gestos disponibles:</h3>
+      <ul id="listaGestos" style="color:black; font-family: sans-serif;"></ul>
+    </div>
+
+    <div class="video-container">
+      <h3 style="color:black; font-weight: 700;font-family: sans-serif;"></h3>
+      <video id="video" autoplay playsinline width="640" height="480"></video>
+    </div>
+
+    <div style="display:none">
+      <h2 style="color:black; font-weight: 700;font-family: sans-serif;">DETECCIÓN DE PUNTOS</h2>
+      <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
+      <img id="preview" width="640" height="480">
+    </div>
+
+  </div>
+
+  <div id="output">Esperando conexión...</div>
+</main>
+  </div>
+
+  <script>
+
+    const toggleBtn = document.getElementById('toggleMenu');
+    const sidebar = document.querySelector('.sidebar');
+    const menu = document.getElementById('menuOpciones');
+
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('expanded');
+      menu.classList.toggle('hidden');
+    });
+
+
+    const video = document.getElementById("video");
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const output = document.getElementById("output");
+    const preview = document.getElementById("preview");
+
+    let ws;
+    let sendInterval;
+    const RECONNECT_INTERVAL = 3000; // ms
+
+    // Función para obtener la URL del WebSocket según el protocolo y el puerto
+    const getWebSocketURL = () => {
+      const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+      return `${protocol}://${window.location.hostname}:${window.location.port}/ws`;
+    };
+    // ws = new WebSocket(`wss://${window.location.hostname}/ws`); CONEXIÓN ANTIGUA
+
+    function connectWebSocket() {
+      
+      ws = new WebSocket(getWebSocketURL());
+
+      ws.onopen = () => {
+        output.innerText = "Conectado. Enviando video...";
+        if (!sendInterval) {
+          sendInterval = setInterval(() => {
+            if (ws.readyState === WebSocket.OPEN) {
+              try {
+              ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+              const dataUrl = canvas.toDataURL("image/jpeg");
+              ws.send(dataUrl);
+            } catch (err) {
+              console.error("Error al enviar frame:", err);
+            }
+            }
+          }, 150);
+        }
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          if (data.frame) {
+            preview.src = data.frame;
+          }
+          if (data.action) {
+            output.innerText = `Gesto detectado: ${data.action} (${(data.probability * 100).toFixed(1)}%)`;
+          } else {
+            output.innerText = `Sin gesto detectado`;
+          }
+        } catch (err) {
+          console.error("Error al procesar mensaje:", err);
+        }
+      };
+
+      ws.onerror = (err) => {
+        console.error("WebSocket error:", err);
+        output.innerText = "Error en WebSocket.";
+      };
+
+      ws.onclose = () => {
+        output.innerText = "Conexión cerrada. Reintentando...";
+        if (sendInterval) {
+          clearInterval(sendInterval);
+          sendInterval = null;
+        }
+        // Intentar reconectar después de un pequeño retraso
+        setTimeout(connectWebSocket, RECONNECT_INTERVAL);
+      };
+    }
+
+    // Obtener acceso a la cámara
+    navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+      video.srcObject = stream;
+      connectWebSocket(); // Iniciar WebSocket al obtener cámara
+    }).catch((err) => {
+      console.error("Error al acceder a la cámara:", err);
+      output.innerText = "No se pudo acceder a la cámara.";
+    });
+
+    const gestos = ["Hola", "Gracias", "Adiós", "Amor", "Sí", "No", "Ayuda"];
+
+  const lista = document.getElementById("listaGestos");
+  gestos.forEach(gesto => {
+    const li = document.createElement("li");
+    li.textContent = gesto;
+    lista.appendChild(li);
+  });
+  </script>
+</body>
+
+</html>
