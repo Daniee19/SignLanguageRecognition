@@ -1,6 +1,7 @@
 from keras.models import load_model
 import numpy as np
 
+
 class SignModel:
     def __init__(self, path="model/action.h5"):
         self.model = load_model(path)
