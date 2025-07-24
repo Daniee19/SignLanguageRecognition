@@ -21,7 +21,10 @@ static_path = os.path.join(os.path.dirname(__file__), "static")
 # Se pueden servir archivos estáticos como imágenes, CSS, JS, etc.
 app.mount("/static", StaticFiles(directory=static_path), name="static")
 
+#Se llama esto para que se pueda predecir (desde otra clase)
 model = SignModel()
+
+
 mp_holistic = mp.solutions.holistic
 
 @app.get("/")
@@ -39,12 +42,15 @@ async def websocket_endpoint(websocket: WebSocket):
             img_data = base64.b64decode(b64)
             nparr = np.frombuffer(img_data, np.uint8)
             frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+            
             img, results = detect_and_draw(frame, holistic)
             keypoints = extract_keypoints(results)
+            
             action, prob = model.predict(keypoints)
             # re-encode frame
             _, buf = cv2.imencode('.jpg', img)
             jpg_b64 = base64.b64encode(buf).decode('utf-8')
+            
             await websocket.send_json({
                 "frame": f"data:image/jpeg;base64,{jpg_b64}",
                 "action": str(action),
