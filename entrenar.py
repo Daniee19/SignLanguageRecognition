@@ -2,22 +2,25 @@ import os
 import cv2
 import numpy as np
 import mediapipe as mp
+import json
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # para esconder warnings de TensorFlow
 
 # === Palabra a entrenar ===
 
-nueva_palabra = "feliz"
+nueva_palabra = "comeer"
 
 # Número de videos y frames por video
 secuencia_video = 30
 secuencia_frame = 30
 
 # Guardado
-DATA_PATH = os.path.join("MP_Data", nueva_palabra)
+DATA_PATH = os.path.join("MP_Data")
 
 # Crear las carpetas para guardar los datos
 for sec_video in range(secuencia_video):
     try:
-        os.makedirs(os.path.join(DATA_PATH, str(sec_video)))
+        os.makedirs(os.path.join(DATA_PATH, nueva_palabra,str(sec_video)))
     except:
         pass
 
@@ -58,7 +61,11 @@ def extraer_puntos(results):
 
 
 # Captura y guardado
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(2)
+
+if not cap.isOpened():
+    print("❌ No se pudo abrir la cámara.")
+    
 with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
     accion = nueva_palabra
     
@@ -66,7 +73,10 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
             for frame_number in range(secuencia_frame):
                 #Leer por el video
                 ret, frame = cap.read()
-
+                if not ret or frame is None:
+                    print("❌ No se pudo capturar el frame")
+                    continue  # o break, si quieres salir del bucle
+                
                 #Realizar detecciones
                 image, resultados = mediapipe_deteccion(frame, holistic)
                 dibujar_landmarks(image, resultados)

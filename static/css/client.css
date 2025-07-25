@@ -164,6 +164,7 @@ a {
   align-items: center;
   justify-content: space-between;
   backdrop-filter: blur(6px);
+  padding-left: 200px;
 }
 
 /* ====== CONTENIDO PRINCIPAL ====== */

@@ -1,4 +1,18 @@
 <html lang="es">
+<header>
+    <link rel="stylesheet" href="/static/css/home.css">
+</header>
+
+<nav id="sidebar">
+    <button class="menu-toggle" style="color:white;" onclick="toggleMenu()">☰</button>
+    <div class="menu-items">
+        <a href="/static/html/home.html">Inicio</a>
+        <a href="/static/html/entrenar.html">Entrenar AI</a>
+        <a href="/static/html/video.html">Empezar a practicar</a>
+        <a href="/static/html/portada.html">Cambiar de rol</a>
+        <a href="/static/html/iniciosesion.html">Cerrar sesión</a>
+    </div>
+</nav>
 
 <head>
     <meta charset="UTF-8">
@@ -24,8 +38,7 @@
         }
 
         button {
-            padding: 10px 20px;
-            margin-top: 20px;
+        
             font-size: 16px;
         }
 
@@ -45,12 +58,12 @@
     <label for="word">Palabra a entrenar:</label>
     <input type="text" id="word" placeholder="Escribe la palabra">
 
-    <h3>Palabra actual: <span id="current-word">hola</span></h3>
-    <h3>Video: <span id="video-count">30</span> / 30</h3>
-    <h3>Frames guardados: <span id="frame-count">30</span> / 30</h3>
+    <h3>Palabra actual: <span id="current-word"></span></h3>
+    <h3>Video: <span id="video-count">0</span> / 30</h3>
+    <h3>Frames guardados: <span id="frame-count">0</span> / 30</h3>
 
     <button id="startBtn">Iniciar Entrenamiento</button>
-    <div id="status">✅ Entrenamiento completo para esta palabra.</div>
+    <div id="status">Entrenamiento completo para esta palabra.</div>
 
     <canvas id="canvas" width="640" height="480"></canvas>
 
@@ -82,6 +95,7 @@
         }
 
         async function startTraining() {
+            //Se obtiene el título de la palabrita
             const word = wordInput.value.trim();
             if (!word) {
                 alert("Escribe una palabra antes de comenzar.");
@@ -136,7 +150,13 @@
                     videoLabel.textContent = videoCount;
                 }
             };
+            ws.onerror = (err) => {
+                    console.error("❌ Error en WebSocket:", err);
+                };
 
+            ws.onclose = () => {
+                console.warn("⚠️ WebSocket cerrado");
+                };
             const sendFrame = () => {
                 if (!ws || ws.readyState !== WebSocket.OPEN || !recording) return;
                 const tmpCanvas = document.createElement("canvas");
@@ -154,8 +174,7 @@
         document.getElementById("startBtn").addEventListener("click", startTraining);
     </script>
 
-
-
+    <script src="/static/js/home.js"></script>
 </body>
 
 </html>

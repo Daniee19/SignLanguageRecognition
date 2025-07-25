@@ -1,6 +1,7 @@
-*{
+* {
   font-family: sans-serif;
 }
+
 :root {
   --blanco: #ffffff;
   --gris-claro: #f0f0f0;
@@ -79,11 +80,15 @@ nav {
   top: 60px;
   left: 0;
   width: 60px;
-  height: calc(100vh - 60px);
   padding: 1rem;
-  box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+  background-color: rgba(30, 30, 63, 0.95);
   transition: width 0.3s ease;
   overflow: hidden;
+  top: 0px;
+  height: 100vh;
+  top: 0px;
+  z-index: 999;
 }
 
 nav.open {
@@ -112,7 +117,7 @@ nav.open .menu-items {
 
 nav a {
   text-decoration: none;
-  color: var(--gris-oscuro);
+  color: white;
   padding: 0.8rem;
   border-radius: 8px;
   transition: background-color 0.3s;
@@ -120,7 +125,6 @@ nav a {
 
 nav a:hover {
   background-color: var(--gris-medio);
-  color: var(--blanco);
 }
 
 main {
@@ -128,7 +132,7 @@ main {
   transition: margin-left 0.3s ease;
 }
 
-nav.open ~ main {
+nav.open~main {
   margin-left: 220px;
 }
 
@@ -210,8 +214,13 @@ footer {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes fadeInUp {
@@ -219,6 +228,7 @@ footer {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

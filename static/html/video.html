@@ -5,19 +5,21 @@
   <meta charset="UTF-8" />
   <title>Reconocimiento de gestos</title>
   <link rel="stylesheet" href="/static/css/client.css" />
+  <link rel="stylesheet" href="/static/css/home.css">
 </head>
 
 <body>
   <div id="grid-layout">
-    <aside class="sidebar">
-      <button id="toggleMenu">☰</button>
-      <nav id="menuOpciones" class="hidden">
+    <nav id="sidebar">
+      <button class="menu-toggle" style="color:white;" onclick="toggleMenu()">☰</button>
+      <div class="menu-items">
         <a href="/static/html/home.html">Inicio</a>
+        <a href="/static/html/entrenar.html">Entrenar AI</a>
+        <a href="/static/html/video.html">Empezar a practicar</a>
         <a href="/static/html/portada.html">Cambiar de rol</a>
         <a href="/static/html/iniciosesion.html">Cerrar sesión</a>
-      </nav>
-    </aside>
-
+      </div>
+    </nav>
     <header id="header">
       <div style="font-size: 1.6rem;
     font-weight: 900;">Reconocimiento de Lenguaje de Señas</div>
@@ -53,15 +55,6 @@
 
   <script>
 
-    const toggleBtn = document.getElementById('toggleMenu');
-    const sidebar = document.querySelector('.sidebar');
-    const menu = document.getElementById('menuOpciones');
-
-    toggleBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('expanded');
-      menu.classList.toggle('hidden');
-    });
-
 
     const video = document.getElementById("video");
     const canvas = document.getElementById("canvas");
@@ -88,6 +81,7 @@
         output.innerText = "Conectado. Enviando video...";
         if (!sendInterval) {
           sendInterval = setInterval(() => {
+
             if (ws.readyState === WebSocket.OPEN) {
               try {
                 ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
@@ -152,6 +146,7 @@
     });
 
   </script>
+   <script src="/static/js/home.js"></script>
 </body>
 
 </html>
